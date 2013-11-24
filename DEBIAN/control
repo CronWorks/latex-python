@@ -1,0 +1,11 @@
+Package: latex-python
+Version: 1.23
+Section: cws
+Priority: optional
+Architecture: all
+Essential: no
+Depends: python, texlive, python-jinja2
+Installed-Size: 1
+Maintainer: Luke Scott [luke at cronworks dot net]
+Provides: latex-python
+Description: [cws] just the common stuff for any latex+python packages in the CWS ecosystem
