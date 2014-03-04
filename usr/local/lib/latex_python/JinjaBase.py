@@ -182,7 +182,7 @@ class JinjaTexDocument(JsonSerializable):
         try:
             for field in sorted(obj.__dict__):
                 child = obj.__dict__[field]
-                if field[:1] != '_' and (isinstance(child, object) or type(child) == dict):
+                if field[:1] != '_' and child != None and (isinstance(child, object) or type(child) == dict):
                     # this object member is either a meta (_) field or is not an object or dict,
                     # and so is not able to have 'required fields'
                     errors += self.validate(child, '%s.%s' % (prefix, field))
