@@ -35,17 +35,17 @@ def generatePdf(texFilename, system, glossary=False):
     errors = []
     warnings = []
 
-    texFilePieces = splitext(texFilename)
-    if texFilePieces[1] != ".tex":
+    (baseFilename, extension) = splitext(texFilename)
+    if extension != ".tex":
         return (["You must specify a LaTeX file ending in .tex"], [])
 
-    logFilename = texFilePieces[0] + '.log'
+    logFilename = baseFilename + '.log'
     logFile = open(logFilename, 'w')
 
-    auxFilename = texFilePieces[0] + '.aux'
+    auxFilename = baseFilename + '.aux'
     auxBackupFilename = auxFilename + '.bk'
 
-    workingDir = dirname(texFilePieces[0])
+    workingDir = dirname(baseFilename)
     runNumber = 0
     try:
         remove(auxFilename)
@@ -62,14 +62,14 @@ def generatePdf(texFilename, system, glossary=False):
         print 'Starting run number %d' % runNumber
         logFile.write('\n===== STARTING RUN NUMBER %d =====' % runNumber)
         try:
-            remove(texFilePieces[0] + '.pdf')
+            remove(baseFilename + '.pdf')
         except:
             pass
 
         if glossary:
             print '- Calling makeglossaries...'
-            logFile.write('\n\n===== Making Glossaries (1): makeglossaries %s... =====\n' % texFilePieces[0])
-            system.runCommand(['makeglossaries', texFilePieces[0]], out=logFile)
+            logFile.write('\n\n===== Making Glossaries (1): makeglossaries %s... =====\n' % baseFilename)
+            system.runCommand(['makeglossaries', baseFilename], out=logFile)
 
         print '- Generating PDF...'
         logFile.write('\n\n===== Calling XeLaTeX (2): xelatex -synctex=0 -interaction=nonstopmode --src-specials "%s" =====\n' % texFilename)

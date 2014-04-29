@@ -156,7 +156,7 @@ class JinjaTexDocument(JsonSerializable):
         ''' % (outputFilenameBase, today.year, today.month, today.day, today.year))
         output = self.classTemplate.render(variables)
         classFile.write(output)
-        classFile.flush()
+        classFile.close()
 
         texFilename = outputFilenameBase + '.tex'
         texFile = codecs.open(texFilename, 'w', 'utf-8')
@@ -165,7 +165,7 @@ class JinjaTexDocument(JsonSerializable):
         ''' % (outputFilenameBase))
         output = self.texTemplate.render(variables)
         texFile.write(output)
-        texFile.flush()
+        texFile.close()
 
         return generatePdf(texFilename=texFilename, system=system)
 
