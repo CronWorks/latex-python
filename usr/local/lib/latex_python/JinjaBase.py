@@ -138,6 +138,32 @@ class JinjaTexDocument(JsonSerializable):
         self.classTemplate = self.environment.get_template(templateBaseName + '.cls')
         self.texTemplate = self.environment.get_template(templateBaseName + '.tex')
 
+    def addContent(self, templateModule):
+        templateModule.addContent(self)
+
+    def validate(self, obj=None, prefix=''):
+        if obj == None:
+            # start recursion at self
+            obj = self
+        errors = []
+        requiredFields = getattr(obj, '_required', [])
+        for requiredField in requiredFields:
+            if not requiredField in obj.__dict__:
+                errors.append('%s.%s' % (prefix, requiredField))
+        # recurse
+        try:
+            for field in sorted(obj.__dict__):
+                child = obj.__dict__[field]
+                if field[:1] != '_' and child != None and (isinstance(child, object) or type(child) == dict):
+                    # this object member is either a meta (_) field or is not an object or dict,
+                    # and so is not able to have 'required fields'
+                    errors += self.validate(child, '%s.%s' % (prefix, field))
+        except:
+            # probably a list
+            pass
+
+        return errors
+
     def generate(self, outputFilenameBase, system, variables={}):
         errors = self.validate()
         if errors:
@@ -168,29 +194,6 @@ class JinjaTexDocument(JsonSerializable):
         texFile.close()
 
         return generatePdf(texFilename=texFilename, system=system)
-
-    def validate(self, obj=None, prefix=''):
-        if obj == None:
-            # start recursion at self
-            obj = self
-        errors = []
-        requiredFields = getattr(obj, '_required', [])
-        for requiredField in requiredFields:
-            if not requiredField in obj.__dict__:
-                errors.append('%s.%s' % (prefix, requiredField))
-        # recurse
-        try:
-            for field in sorted(obj.__dict__):
-                child = obj.__dict__[field]
-                if field[:1] != '_' and child != None and (isinstance(child, object) or type(child) == dict):
-                    # this object member is either a meta (_) field or is not an object or dict,
-                    # and so is not able to have 'required fields'
-                    errors += self.validate(child, '%s.%s' % (prefix, field))
-        except:
-            # probably a list
-            pass
-
-        return errors
 
 class Date(JsonSerializable):
     # NOTE: true/false not actually measured because __init__ is overridden
