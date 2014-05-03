@@ -76,8 +76,17 @@ def inflate(value, objectTypes):
 
 
 class JsonSerializable(object):
-    'a base class for objects which can be serialized using object.__json__()'
+    '''
+    a base class for objects which can be serialized using object.__json__().
+    (currently, it's just getJsonValue())
+    
+    Any field starting with an underscore (_) is considered a 'meta' field,
+    and will not be serialized. This allows Python objects to maintain state
+    for their operation which is not relevant to their serialized/persisted state.
+    '''
 
+    _required = []
+    
     def __init__(self, **kwargs):
         # set fields by dict constructor
         for arg in kwargs:
@@ -97,7 +106,8 @@ class JsonSerializable(object):
             if value == None:
                 continue
             result[field] = self.getJsonValue(value)
-        # add the MongoDB ID if it exists
+        # SPECIAL CASE: add the MongoDB ID if it exists.
+        # other ways of handling this would have been more hacky.
         if '_id' in self.__dict__:
             result['_id'] = self._id
         return result
@@ -119,27 +129,6 @@ class JsonSerializable(object):
         otherJson = other.getJsonCompatibleDict()
         # compare naturally
         return myJson == otherJson
-
-class JinjaTexDocument(JsonSerializable):
-
-    def __init__(self, searchPath=None, **kwargs):
-        super(JinjaTexDocument, self).__init__(**kwargs)
-
-        if searchPath == None:
-            searchPath = realpath(dirname(__file__))
-
-        environmentParameters = {}
-        environmentParameters.update(DEFAULT_ENVIRONMENT_PARAMETERS)
-        environmentParameters['loader'] = FileSystemLoader(searchPath)
-        self.environment = Environment(**environmentParameters)
-        self.environment.filters['escapeTex'] = escapeTex
-
-        templateBaseName = self.__class__.__name__
-        self.classTemplate = self.environment.get_template(templateBaseName + '.cls')
-        self.texTemplate = self.environment.get_template(templateBaseName + '.tex')
-
-    def addContent(self, templateModule):
-        templateModule.addContent(self)
 
     def validate(self, obj=None, prefix=''):
         if obj == None:
@@ -163,6 +152,26 @@ class JinjaTexDocument(JsonSerializable):
             pass
 
         return errors
+
+class JinjaTexDocument(JsonSerializable):
+    def __init__(self, searchPath=None, **kwargs):
+        super(JinjaTexDocument, self).__init__(**kwargs)
+
+        if searchPath == None:
+            searchPath = realpath(dirname(__file__))
+
+        environmentParameters = {}
+        environmentParameters.update(DEFAULT_ENVIRONMENT_PARAMETERS)
+        environmentParameters['loader'] = FileSystemLoader(searchPath)
+        self.environment = Environment(**environmentParameters)
+        self.environment.filters['escapeTex'] = escapeTex
+
+        templateBaseName = self.__class__.__name__
+        self.classTemplate = self.environment.get_template(templateBaseName + '.cls')
+        self.texTemplate = self.environment.get_template(templateBaseName + '.tex')
+
+    def addContent(self, templateModule):
+        templateModule.addContent(self)
 
     def generate(self, outputFilenameBase, system, variables={}):
         errors = self.validate()
