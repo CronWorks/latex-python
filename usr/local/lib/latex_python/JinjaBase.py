@@ -84,10 +84,9 @@ class JsonSerializable(object):
     and will not be serialized. This allows Python objects to maintain state
     for their operation which is not relevant to their serialized/persisted state.
     '''
-
-    _required = []
     
     def __init__(self, **kwargs):
+        self._required = []
         # set fields by dict constructor
         for arg in kwargs:
             self.__dict__[arg] = kwargs[arg]
@@ -157,12 +156,9 @@ class JinjaTexDocument(JsonSerializable):
     def __init__(self, searchPath=None, **kwargs):
         super(JinjaTexDocument, self).__init__(**kwargs)
 
-        if searchPath == None:
-            searchPath = realpath(dirname(__file__))
-
         environmentParameters = {}
         environmentParameters.update(DEFAULT_ENVIRONMENT_PARAMETERS)
-        environmentParameters['loader'] = FileSystemLoader(searchPath)
+        environmentParameters['loader'] = FileSystemLoader(searchPath or realpath(dirname(__file__)))
         self.environment = Environment(**environmentParameters)
         self.environment.filters['escapeTex'] = escapeTex
 
@@ -206,8 +202,8 @@ class JinjaTexDocument(JsonSerializable):
 
 class Date(JsonSerializable):
     # NOTE: true/false not actually measured because __init__ is overridden
-    _required = ['year', 'month', 'day']
     def __init__(self, year=None, month=None, day=None):
+        self._required = ['year', 'month', 'day']
         today = datetime.date.today()
         self.year = year or today.year
         self.month = month or today.month
@@ -219,8 +215,8 @@ class Date(JsonSerializable):
 
 
 class Money(JsonSerializable):
-    _required = ['amount']
     def __init__(self, amount):
+        self._required = ['amount']
         self.amount = amount
 
     def __str__(self, *args, **kwargs):
@@ -229,8 +225,8 @@ class Money(JsonSerializable):
         return result
 
 class Percent(JsonSerializable):
-    _required = ['amount']
     def __init__(self, amount):
+        self._required = ['amount']
         self.amount = amount
 
     def __str__(self, *args, **kwargs):
