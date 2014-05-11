@@ -21,6 +21,11 @@ import datetime
 import locale
 import re
 
+# everything should be utf-8
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
+
 from jinja2 import Environment, FileSystemLoader
 from json import dumps
 from os.path import dirname, realpath
