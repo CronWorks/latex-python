@@ -79,12 +79,12 @@ class JsonSerializable(object):
     '''
     a base class for objects which can be serialized using object.__json__().
     (currently, it's just getJsonValue())
-    
+
     Any field starting with an underscore (_) is considered a 'meta' field,
     and will not be serialized. This allows Python objects to maintain state
     for their operation which is not relevant to their serialized/persisted state.
     '''
-    
+
     def __init__(self, **kwargs):
         self._required = []
         # set fields by dict constructor
@@ -153,7 +153,7 @@ class JsonSerializable(object):
         return errors
 
 class JinjaTexDocument(JsonSerializable):
-    def __init__(self, searchPath=None, **kwargs):
+    def __init__(self, templateModule=None, searchPath=None, **kwargs):
         super(JinjaTexDocument, self).__init__(**kwargs)
 
         environmentParameters = {}
@@ -165,11 +165,19 @@ class JinjaTexDocument(JsonSerializable):
         templateBaseName = self.__class__.__name__
         self.classTemplate = self.environment.get_template(templateBaseName + '.cls')
         self.texTemplate = self.environment.get_template(templateBaseName + '.tex')
+        self.templateModule = templateModule
 
-    def addContent(self, templateModule):
-        templateModule.addContent(self)
+    def applyTemplateContentIfNecessary(self):
+        if self.templateModule is not None:
+            templateModule = self.templateModule
+            self.templateModule = None  # to avoid recursion
+            templateModule.addContent(self)
 
     def generate(self, outputFilenameBase, system, variables={}):
+        # apply the template if it hasn't been applied already
+        # (this will be the case if no custom clauses have been added)
+        self.applyTemplateContentIfNecessary()
+
         errors = self.validate()
         if errors:
             return (errors, [])  # errors, warnings
