@@ -37,62 +37,65 @@ def generatePdf(texFilename, system, glossary=False):
 
     (baseFilename, extension) = splitext(texFilename)
     if extension != ".tex":
-        return (["You must specify a LaTeX file ending in .tex"], [])
+        errors.append("You must specify a LaTeX file ending in .tex")
+    else:
+        logFilename = baseFilename + '.log'
+        logFile = open(logFilename, 'w')
 
-    logFilename = baseFilename + '.log'
-    logFile = open(logFilename, 'w')
+        auxFilename = baseFilename + '.aux'
+        auxBackupFilename = auxFilename + '.bk'
 
-    auxFilename = baseFilename + '.aux'
-    auxBackupFilename = auxFilename + '.bk'
-
-    workingDir = dirname(baseFilename)
-    runNumber = 0
-    try:
-        remove(auxFilename)
-        remove(auxBackupFilename)
-    except:
-        pass
-
-    while needsReprocessing(auxFilename, auxBackupFilename, logFile):
+        workingDir = dirname(baseFilename)
+        runNumber = 0
         try:
-            copyfile(auxFilename, auxBackupFilename)  # re-run until they are the same
+            remove(auxFilename)
+            remove(auxBackupFilename)
         except:
             pass
 
-        print 'Starting run number %d' % runNumber
-        logFile.write('\n===== STARTING RUN NUMBER %d =====' % runNumber)
-        try:
-            remove(baseFilename + '.pdf')
-        except:
-            pass
+        while needsReprocessing(auxFilename, auxBackupFilename, logFile):
+            try:
+                copyfile(auxFilename, auxBackupFilename)  # re-run until they are the same
+            except:
+                pass
 
-        if glossary:
-            print '- Calling makeglossaries...'
-            logFile.write('\n\n===== Making Glossaries (1): makeglossaries %s... =====\n' % baseFilename)
-            system.runCommand(['makeglossaries', baseFilename], out=logFile)
+            print 'Starting run number %d' % runNumber
+            logFile.write('\n===== STARTING RUN NUMBER %d =====' % runNumber)
+            try:
+                remove(baseFilename + '.pdf')
+            except:
+                pass
 
-        print '- Generating PDF...'
-        logFile.write('\n\n===== Calling XeLaTeX (2): xelatex -synctex=0 -interaction=nonstopmode --src-specials "%s" =====\n' % texFilename)
-        logFile.flush()
-        system.runCommand(['xelatex',
-                           '-synctex=0',
-                           '-interaction=nonstopmode',
-                           '--src-specials',
-                           texFilename],
-                          out=logFile,
-                          workingDir=workingDir)
+            if glossary:
+                print '- Calling makeglossaries...'
+                logFile.write('\n\n===== Making Glossaries (1): makeglossaries %s... =====\n' % baseFilename)
+                system.runCommand(['makeglossaries', baseFilename], out=logFile)
 
-        # no .aux file means something went wrong
-        if not exists(auxFilename):
-            return (['Something went wrong - no .aux file was generated!'], [])
+            print '- Generating PDF...'
+            logFile.write('\n\n===== Calling XeLaTeX (2): xelatex -synctex=0 -interaction=nonstopmode --src-specials "%s" =====\n' % texFilename)
+            logFile.flush()
+            system.runCommand(['xelatex',
+                               '-synctex=0',
+                               '-interaction=nonstopmode',
+                               '--src-specials',
+                               texFilename],
+                              out=logFile,
+                              workingDir=workingDir)
 
-        logFile.write('\n===== Done with run number %d =====\n\n' % runNumber)
-        runNumber += 1
+            # no .aux file means something went wrong
+            if not exists(auxFilename):
+                errors.append('no .aux file was generated!')
+                break
+            if not exists(baseFilename + '.pdf'):
+                errors.append('no .pdf file was generated!')
+            logFile.write('\n===== Done with run number %d =====\n\n' % runNumber)
+            runNumber += 1
 
-    print 'Removing *.aux files...'
-    remove(auxFilename)
-    remove(auxBackupFilename)
+        if exists(auxFilename) or exists(auxBackupFilename):
+            print 'Removing *.aux files...'
+            remove(auxFilename)
+            remove(auxBackupFilename)
 
-    print 'Done.'
+        print 'Done.'
 
     return (errors, warnings)

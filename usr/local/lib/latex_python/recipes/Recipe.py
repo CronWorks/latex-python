@@ -169,5 +169,6 @@ class Recipe(JinjaTexDocument):
             filename = self.title.replace(' ', '') + '.pdf'
         filename = realpath(filename)
 
-        super(Recipe, self).generate(filename, system, variables)
+        # returns (errors, warnings)
+        return super(Recipe, self).generate(filename, system, variables)
 
