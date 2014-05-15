@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2014.4.16)  14 MAY 2014 15:33
+This is XeTeX, Version 3.1415926-2.5-0.9999.3 (TeX Live 2013/Debian) (format=xelatex 2014.4.16)  14 MAY 2014 17:57
 entering extended mode
  restricted \write18 enabled.
  Source specials enabled.
@@ -257,8 +257,7 @@ Package: keyval 1999/03/16 v1.13 key=value parser (DPC)
 (/usr/share/texlive/texmf-dist/tex/latex/graphics/graphics.sty
 Package: graphics 2009/02/05 v1.0o Standard LaTeX Graphics (DPC,SPQR)
 
-(/usr/share/texlive/texmf-dist/tex/latex/graphics/trig.sty
-Package: trig 1999/0
+(/usr/s
 (/usr/share/texlive/texmf-dist/tex/latex/fontspec/fontspec.cfg)))
 (/usr/share/texlive/texmf-dist/tex/latex/base/article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
@@ -310,10 +309,8 @@ l.3         \begin
 * (1in=72.27pt=25.4mm, 1cm=28.453pt)
 
 (/usr/local/share/texmf/tex/luke-tex/microtype2.5/mt-CharisSIL.cfg)
-(/usr/local/share/texmf/tex/luke-tex/microtype2.5/mt-cmr.cfg)
-Overfull \hbox (64.98941pt too wide) in paragraph at lines 14--21
- [][] 
-[1] (./crepes.aux) )
+(/usr/local/share/texmf/tex/luke-tex/microtype2.5/mt-cmr.cfg) [1] (./crepes.aux
+) )
 (see the transcript file for additional information)
 Output written on crepes.pdf (1 page).
 Transcript written on crepes.log.
@@ -321,7 +318,10 @@ Transcript written on crepes.log.
 ===== Done with run number 1 =====
 
 
-.aux and .aux.bk files are the same - signaling success.................
+.aux and .aux.bk files are the same - signaling success...X info: "xparse/define-command"
+. 
+. Defining document command \setmathtt with arg. spec. 'O{}m' on line 77.
+.................................................
 .................................................
 . LaTeX info: "xparse/define-command"
 . 
@@ -714,12 +714,7 @@ File: mt-cmr.cfg 2013/05/19 v2.2 microtype config. file: Computer Modern Roman
 )
 LaTeX Font Info:    Font shape `EU1/OpenSans(1)/bx/n' will be
 (Font)              scaled to size 8.76003pt on input line 15.
-
-Overfull \hbox (64.98941pt too wide) in paragraph at lines 14--21
- [][] 
- []
-
-[1
+ [1
 
 ] (./crepes.aux) ) 
 Here is how much of TeX's memory you used:

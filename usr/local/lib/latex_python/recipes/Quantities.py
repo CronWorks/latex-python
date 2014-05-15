@@ -20,7 +20,8 @@ class Quantity:
         else:
             self.quantity = self.parseQuantityParameter(quantity)
 
-        # like 'large' to specify '1 large bunch', '2 large bunches', '1 overflowing cup', etc
+        # self.qualifier is like 'large' or 'overflowing' to specify
+        # '1 large bunch', '2 large bunches', '1 overflowing cup', etc
         self.qualifier = qualifier
 
     def parseQuantityParameter(self, quantity):

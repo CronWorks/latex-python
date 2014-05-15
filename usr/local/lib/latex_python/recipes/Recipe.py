@@ -70,8 +70,11 @@ class Recipe(JinjaTexDocument):
                 description = amount
                 amount = None
             else:
-                # try to convert str > Fraction
-                amount = Fraction(amount)
+                # try to convert str > Quantity, like: yieldPerBatch('4 1/2','servings')
+                amount = Quantity(amount)
+        else:
+            # assume amount is either Quantity or Fraction
+            pass
         self.makes = {'amount': amount,
                       'description': description}
 
@@ -100,7 +103,7 @@ class Recipe(JinjaTexDocument):
         columnSpec = ['l']
         headings = ['Item']
         for b in sorted(self.batches):
-            columnSpec.append('l')
+            columnSpec.append('c')
             # 'Single Batch', 'Double Batch', etc.
             if len(self.batches) == 1 and b == 1:
                 # if we're only doing a single batch, don't mention batches.
@@ -120,7 +123,7 @@ class Recipe(JinjaTexDocument):
                     # ingredient.quantity will be either int, float, or Quantity
                     q = ingredient['quantity'] * batch
                     columns.append(self.quantityString(q))
-            columns.append(ingredient['notes'])
+            columns.append('\\parbox[t]{0.4\\textwidth}{%s}' % ingredient['notes'])
             rows.append(' & '.join(columns))
 
         headingString = ' & '.join(['\\textbf{%s}' % h for h in headings])
