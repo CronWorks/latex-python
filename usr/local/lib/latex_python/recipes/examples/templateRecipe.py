@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from latex_python.recipes.Recipe import Recipe
-from latex_python.recipes.Quantities import Cup, FluidOunce, Tablespoon, Teaspoon, Bunch
+from latex_python.recipes.Quantities import Quart, Cup, Tablespoon, Teaspoon, FluidOunce, Bunch, Pound, Ounce
 
 
 def generate():
