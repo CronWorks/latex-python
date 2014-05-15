@@ -18,7 +18,10 @@ from os import remove
 from os.path import dirname, exists, splitext
 from shutil import copyfile
 
-def needsReprocessing(auxFilename, auxBackupFilename, logFile):
+def needsReprocessing(auxFilename, auxBackupFilename, logFile, errors):
+    if errors:
+        # need to break the infinite loop
+        return False
     if not exists(auxFilename):
         logFile.write("\n.aux file does not exist - signaling reprocessing...")
         return True
@@ -34,6 +37,7 @@ def needsReprocessing(auxFilename, auxBackupFilename, logFile):
 def generatePdf(texFilename, system, glossary=False):
     errors = []
     warnings = []
+    pdfFilename = None
 
     (baseFilename, extension) = splitext(texFilename)
     if extension != ".tex":
@@ -53,7 +57,7 @@ def generatePdf(texFilename, system, glossary=False):
         except:
             pass
 
-        while needsReprocessing(auxFilename, auxBackupFilename, logFile):
+        while needsReprocessing(auxFilename, auxBackupFilename, logFile, errors):
             try:
                 copyfile(auxFilename, auxBackupFilename)  # re-run until they are the same
             except:
@@ -85,7 +89,6 @@ def generatePdf(texFilename, system, glossary=False):
             # no .aux file means something went wrong
             if not exists(auxFilename):
                 errors.append('no .aux file was generated!')
-                break
             if not exists(baseFilename + '.pdf'):
                 errors.append('no .pdf file was generated!')
             logFile.write('\n===== Done with run number %d =====\n\n' % runNumber)
@@ -96,6 +99,9 @@ def generatePdf(texFilename, system, glossary=False):
             remove(auxFilename)
             remove(auxBackupFilename)
 
+        if not errors:
+            pdfFilename = baseFilename + '.pdf'
+
         print 'Done.'
 
-    return (errors, warnings)
+    return (errors, warnings, pdfFilename)

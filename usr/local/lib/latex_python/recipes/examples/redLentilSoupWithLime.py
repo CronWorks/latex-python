@@ -8,9 +8,6 @@ from latex_python.recipes.Quantities import Cup, FluidOunce, Tablespoon, Teaspoo
 def generate():
     r = Recipe('Red Lentil Soup with Lime')
 
-    r.doubleRecipe()
-    r.tripleRecipe()
-
     r.ingredient('split red lentils', Cup(2), 'picked over and rinsed well')
     r.ingredient('turmeric', Tablespoon(1))
     r.ingredient('butter', Tablespoon(4))
@@ -28,13 +25,16 @@ def generate():
     r.ingredient('cooked rice', Cup(1))
     r.ingredient('yogurt', Tablespoon((4, 6)))
 
+    r.doubleRecipe()
+    r.tripleRecipe()
+
 
     r.description('''
     Easy, fast, and so very good! Althought the flavor is big, the soup is thin.
     Keep it brothy or include a spoonful of rice in each bowl for texture and body.
     A saffron-flavored rice is especially complementary.
     Torn pita bread briefly sautéed in olive oil until crisp is another very good addition to this soup.
-    From Deborah Madison's \\emph{Vegetarian Cooking for Everyone}. 
+    From Deborah Madison's \\emph{Vegetarian Cooking for Everyone}.
     ''')
 
     r.instructions('''

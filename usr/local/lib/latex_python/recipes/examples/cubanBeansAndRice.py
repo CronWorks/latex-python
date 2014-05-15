@@ -7,8 +7,6 @@ from latex_python.recipes.Quantities import Cup, FluidOunce, Tablespoon, Teaspoo
 def generate():
     r = Recipe('Cuban Beans and Rice')
 
-    r.doubleRecipe()
-
     r.ingredient('olive oil', Tablespoon(3))
     r.ingredient('onion', 1, 'peeled and chopped')
     r.ingredient('carrot', 1, 'in 1/4-inch slices')
@@ -23,7 +21,7 @@ def generate():
     r.ingredient('black pepper', Teaspoon(0.25))
     r.ingredient('ground cumin', Teaspoon(1), 'or more to taste')
     r.ingredient('cayenne', Teaspoon(0.25))
-    
+
     # option 3 (Danni's)
     r.ingredient('bay leaves', 1)
     r.ingredient('coriander', Teaspoon(0.5))
@@ -33,6 +31,8 @@ def generate():
     r.ingredientGroup()
     r.ingredient('red bell pepper', 0.5, 'cut into chunks')
     r.ingredient('lime (juice of)', 1)
+
+    r.doubleRecipe()
 
 
     r.description('Inspired by the Swiss pressure cooking cookbook, revised by Danni')

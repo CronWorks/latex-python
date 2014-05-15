@@ -15,7 +15,7 @@ def generate():
 
     r.description('French style crepes, which are very good with either sweet or savory ingredients.')
 
-    # note: should covert 1/3 to $\genfrac{1}{3}$
+    # note: should covert 1/3 to \nicefrac{1}{3}
     r.instructions('''
     Mix all the ingredients thouroughly with a hand mixer (preferred), or in a blender
     until you get a uniform batter with the consistency of cream. After mixing,
