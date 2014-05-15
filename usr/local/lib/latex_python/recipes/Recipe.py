@@ -107,6 +107,9 @@ class Recipe(JinjaTexDocument):
         }
         self.ingredients.append(ingredient)
 
+    def ingredientGroup(self):
+        self.ingredients.append(None)
+
     def getIngredientsTable(self):
         columnSpec = ['l']
         headings = ['Item']
@@ -123,18 +126,22 @@ class Recipe(JinjaTexDocument):
 
         rows = []
         for ingredient in self.ingredients:
-            columns = [ingredient['name']]
-            for batch in sorted(self.batches):
-                if ingredient['quantity'] is None:
-                    columns.append('')
-                else:
-                    # ingredient.quantity will be either int, float, or Quantity
-                    q = ingredient['quantity'] * batch
-                    columns.append(self.quantityString(q))
+            if ingredient is None:
+                # it's just a space between groupings
+                rows.append('')
+            else:
+                columns = [ingredient['name']]
+                for batch in sorted(self.batches):
+                    if ingredient['quantity'] is None:
+                        columns.append('')
+                    else:
+                        # ingredient.quantity will be either int, float, or Quantity
+                        q = ingredient['quantity'] * batch
+                        columns.append(self.quantityString(q))
 
-            notes = self.doStandardTexReplacements(ingredient['notes'])
-            columns.append('\\parbox[t]{0.4\\textwidth}{%s}' % notes)
-            rows.append(' & '.join(columns))
+                notes = self.doStandardTexReplacements(ingredient['notes'])
+                columns.append('\\parbox[t]{0.4\\textwidth}{%s}' % notes)
+                rows.append(' & '.join(columns))
 
         headingString = ' & '.join(['\\textbf{%s}' % h for h in headings])
         result = '''
