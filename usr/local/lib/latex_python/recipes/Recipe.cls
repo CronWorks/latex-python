@@ -13,7 +13,6 @@
 
 \LoadClass[11pt,letterpaper]{article}
 
-
 \usepackage[letterpaper]{geometry}
 \geometry{
     verbose,
@@ -25,13 +24,14 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{5pt}
 
-\usepackage{xfrac} % for \sfrac{1}{3}
 \usepackage{microtype}
+\usepackage{nicefrac} % for \nicefrac{1}{3}
 
 \renewcommand{\section}{%
-%   \@startsection{section}{level}{indent}{above>heading}{heading>text}{\bfseries}
-    \@startsection{section}{1}{0pt}{7pt}{0.1pt}{\bfseries}
+%   \@startsection{section}{level}{indent}{above>heading}{heading>text}{style}
+    \@startsection{section}{0}{0pt}{7pt}{0.1pt}{\bfseries}
 }
+
 
 \AtBeginDocument{
     % don't show the page number

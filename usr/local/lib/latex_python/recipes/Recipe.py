@@ -61,10 +61,10 @@ class Recipe(JinjaTexDocument):
 
     def generateTexFractions(self, text):
         # replace two-part fractions (like '... 1 1/2 ...') WITHOUT a space
-        text = re.sub(r'(\d)(\s)(\d)/(\d)([^\d])', r'\1\\sfrac{\3}{\4}\5', ' %s ' % text, flags=re.M)
+        text = re.sub(r'(\d)(\s)(\d)/(\d)([^\d])', r'\1\\nicefrac{\3}{\4}\5', ' %s ' % text, flags=re.M)
 
         # replace any remaining one-part fractions (like '... 1/2 ...'), RETAINING the space
-        text = re.sub(r'([^\d])(\d)/(\d)([^\d])', r'\1\\sfrac{\2}{\3}\4', ' %s ' % text, flags=re.M)
+        text = re.sub(r'([^\d])(\d)/(\d)([^\d])', r'\1\\nicefrac{\2}{\3}\4', ' %s ' % text, flags=re.M)
 
         return text.strip()
 
@@ -131,7 +131,9 @@ class Recipe(JinjaTexDocument):
                     # ingredient.quantity will be either int, float, or Quantity
                     q = ingredient['quantity'] * batch
                     columns.append(self.quantityString(q))
-            columns.append('\\parbox[t]{0.4\\textwidth}{%s}' % ingredient['notes'])
+
+            notes = self.doStandardTexReplacements(ingredient['notes'])
+            columns.append('\\parbox[t]{0.4\\textwidth}{%s}' % notes)
             rows.append(' & '.join(columns))
 
         headingString = ' & '.join(['\\textbf{%s}' % h for h in headings])
