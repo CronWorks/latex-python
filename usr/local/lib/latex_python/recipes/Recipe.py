@@ -46,20 +46,25 @@ class Recipe(JinjaTexDocument):
         self.instructionsList.append(instructions)
 
     def getDescriptionText(self):
-        return self.generateTexFractions(self.descriptionText)
+        return self.doStandardTexReplacements(self.descriptionText)
 
     def getInstructionsText(self):
         result = []
         for i in self.instructionsList:
-            result.append(self.generateTexFractions(i))
+            result.append(self.doStandardTexReplacements(i))
         return ' \n\n'.join(result)
+
+    def doStandardTexReplacements(self, text):
+        text = self.generateTexFractions(text)
+        # TODO others?
+        return text
 
     def generateTexFractions(self, text):
         # replace two-part fractions (like '... 1 1/2 ...') WITHOUT a space
-        text = re.sub(r'(\d)(\s)(\d)/(\d)([^\d])', r'\1$\\frac{\3}{\4}$\5', ' %s ' % text, flags=re.M)
+        text = re.sub(r'(\d)(\s)(\d)/(\d)([^\d])', r'\1\\sfrac{\3}{\4}\5', ' %s ' % text, flags=re.M)
 
         # replace any remaining one-part fractions (like '... 1/2 ...'), RETAINING the space
-        text = re.sub(r'([^\d])(\d)/(\d)([^\d])', r'\1$\\frac{\2}{\3}$\4', ' %s ' % text, flags=re.M)
+        text = re.sub(r'([^\d])(\d)/(\d)([^\d])', r'\1\\sfrac{\2}{\3}\4', ' %s ' % text, flags=re.M)
 
         return text.strip()
 
@@ -143,9 +148,9 @@ class Recipe(JinjaTexDocument):
 
     def quantityString(self, q, forceFullQuantityText=False):
         if isinstance(q, Quantity) and (forceFullQuantityText or self.fullQuantityText):
-            result = self.generateTexFractions(q.fullString())
+            result = self.doStandardTexReplacements(q.fullString())
         else:
-            result = self.generateTexFractions(str(q))
+            result = self.doStandardTexReplacements(str(q))
         return result
 
     def getYieldDescription(self):
