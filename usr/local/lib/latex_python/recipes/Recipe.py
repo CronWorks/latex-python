@@ -91,7 +91,10 @@ class Recipe(JinjaTexDocument):
         self.batches.add(4)
 
     # use quantity == None for things like salt (i.e. to taste)
-    def ingredient(self, name, quantity=None, notes=''):
+    def ingredient(self, name, quantity=0, notes=''):
+        if isinstance(quantity, (int, float, str)):
+            # it's a plain scalar, like '1' or '1/2' or 0.5.
+            quantity = Quantity(quantity)
         ingredient = {
             'name': name,
             'quantity': quantity,
