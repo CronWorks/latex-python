@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
 from latex_python.recipes.Recipe import Recipe
 from latex_python.recipes.Quantities import Cup, FluidOunce, Tablespoon, Teaspoon, Bunch
+
 
 def generate():
     # title of the dish
@@ -14,6 +14,10 @@ def generate():
     ''')
 
     # ingredient name, quantity, prep/notes
+    # NOTE: Quantities can have a descriptive modifier like 'large' or 'overflowing'.
+    #       (there is no restriction on what can be identified)
+    # EX:   r.ingredient('brown rice', Cup(1.5, 'overflowing'))
+    #       r.ingredient('kale', Bunch(1, 'large'), 'chopped')
     r.ingredient('', 1, '')
 
     # un-comment as desired
