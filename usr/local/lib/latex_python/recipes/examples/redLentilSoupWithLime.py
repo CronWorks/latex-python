@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
 from latex_python.recipes.Recipe import Recipe
@@ -33,6 +34,7 @@ def generate():
     Keep it brothy or include a spoonful of rice in each bowl for texture and body.
     A saffron-flavored rice is especially complementary.
     Torn pita bread briefly sautéed in olive oil until crisp is another very good addition to this soup.
+    From Deborah Madison's \\emph{Vegetarian Cooking for Everyone}. 
     ''')
 
     r.instructions('''
