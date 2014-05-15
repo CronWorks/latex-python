@@ -25,8 +25,8 @@
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{5pt}
 
+\usepackage{xfrac} % for \sfrac{1}{3}
 \usepackage{microtype}
-
 
 \renewcommand{\section}{%
 %   \@startsection{section}{level}{indent}{above>heading}{heading>text}{\bfseries}
