@@ -9,40 +9,51 @@ def generate():
 
     r.doubleRecipe()
 
-    r.ingredient('split red lentils', Cup(2), 'picked over and rinsed well')
+    r.ingredient('olive oil', Tablespoon(3))
+    r.ingredient('onion', 1, 'peeled and chopped')
+    r.ingredient('carrot', 1, 'in 1/4-inch slices')
+    r.ingredient('garlic', 4, 'minced')
+    r.ingredient('short grain brown rice', Cup(0.75))
+
+    r.ingredientGroup()
+    r.ingredient('water', Cup(3), 'about 1/3 less if using white rice')
+    r.ingredient('dry black beans', Cup(1), 'washed and soaked for 2+ hours')
+
+    r.ingredient('salt', Teaspoon(1))
+    r.ingredient('black pepper', Teaspoon(0.25))
+    r.ingredient('ground cumin', Teaspoon(1), 'or more to taste')
+    r.ingredient('cayenne', Teaspoon(0.25))
+    
+    # option 3 (Danni's)
+    r.ingredient('bay leaves', 1)
+    r.ingredient('coriander', Teaspoon(0.5))
+    r.ingredient('\\emph{smoked} red pepper flakes', Teaspoon(1))
+    r.ingredient('cilantro', Cup(0.25), 'chopped, including stems')
+
+    r.ingredientGroup()
+    r.ingredient('red bell pepper', 0.5, 'cut into chunks')
+    r.ingredient('lime (juice of)', 1)
 
 
-    r.description('''
-    Easy, fast, and so very good! Althought the flavor is big, the soup is thin.
-    Keep it brothy or include a spoonful of rice in each bowl for texture and body.
-    A saffron-flavored rice is especially complementary.
-    Torn pita bread briefly sautéed in olive oil until crisp is another very good addition to this soup.
-    ''')
+    r.description('Inspired by the Swiss pressure cooking cookbook, revised by Danni')
 
     r.instructions('''
-    Put the lentils in a soup pot with 2 1/2 quarts water, the turmeric,
-    1 tablespoon of the butter, and 1 tablespoon salt. Bring to a boil, then lower the heat and simmer, covered,
-    until the lentils are soft and falling apart, about 20 minutes. Puree for a smooth and nicer-looking soup.
+        Heat olive oil over medium high heat in pressure cooker.
+        Add onion, garlic, and carrot if you are including one. Sautée until onion softens.
+        Add rice over high heat, stirring often, until lightly golden.
+
+        Add water and soaked, drained beans. Stir in salt, pepper, herbs, and spices.
+        Close lid and bring pressure to first ring over high heat.
+        Cook for 22 minutes on the first ring.
+
+        Use the natural release method.
+        When the pressure releases, add the red bell pepper chunks and the lime juice.
     ''')
+    r.instructions('Serve with plain yogurt.')
 
-    r.instructions('''
-    While the soup is cooking, prepare the onion flavoring: In a medium skillet over low heat,
-    cook the onion in 2 tablespoons of the remaining butter with the cumin and mustard, stirring occasionally.
-    When soft, about the time the lentils are cooked or after 15 minutes, add the cilantro and cook for a minute more.
-    Add the onion mixture to the soup, then add the juice of 2 limes.
-    Taste, then add more if needed to bring up the flavors. The soup should be a tad sour.
-    ''')
+    r.yieldPerBatch(4, 'servings')
 
-    r.instructions('''
-    Just before serving, add the last tablespoon of butter to a wide skillet. When foamy, add the spinach,
-    sprinkle with salt, and cook just long enough to wilt. If the rice is warm, place a spoonful in each bowl.
-    If it's leftover rice, add it to the soup and let it heat through for a minute. Serve the soup, divide
-    the spinach among the bowls, and swirl in a spoonful of yogurt.
-    ''')
-
-    r.yieldPerBatch(FluidOunce(80))
-
-    r.generate()
+    return r.generate('cubanBeansAndRice.pdf')
 
 if __name__ == '__main__':
     generate()
