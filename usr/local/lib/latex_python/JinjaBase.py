@@ -178,6 +178,9 @@ class JinjaTexDocument(JsonSerializable):
             self.templateModule = None  # to avoid recursion
             templateModule.addContent(self)
 
+    def set(self, **kwargs):
+        self.__dict__.update(kwargs)
+
     def generate(self, outputFilenameBase, system, variables={}):
         # apply the template if it hasn't been applied already
         # (this will be the case if no custom clauses have been added)
