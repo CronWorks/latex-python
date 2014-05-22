@@ -13,7 +13,7 @@ def generate():
     r.ingredient('garlic', 4, 'minced')
     r.ingredient('short grain brown rice', Cup(0.75))
 
-    r.ingredientGroup()
+    r.ingredientGroupDivider()
     r.ingredient('water', Cup(3), 'about 1/3 less if using white rice')
     r.ingredient('dry black beans', Cup(1), 'washed and soaked for 2+ hours')
 
@@ -28,7 +28,7 @@ def generate():
     r.ingredient('\\emph{smoked} red pepper flakes', Teaspoon(1))
     r.ingredient('cilantro', Cup(0.25), 'chopped, including stems')
 
-    r.ingredientGroup()
+    r.ingredientGroupDivider()
     r.ingredient('red bell pepper', 0.5, 'cut into chunks')
     r.ingredient('lime (juice of)', 1)
 
@@ -37,7 +37,7 @@ def generate():
 
     r.description('Inspired by the Swiss pressure cooking cookbook, revised by Danni')
 
-    r.instructions('''
+    r.addInstruction('''
         Heat olive oil over medium high heat in pressure cooker.
         Add onion, garlic, and carrot if you are including one. Sautée until onion softens.
         Add rice over high heat, stirring often, until lightly golden.
@@ -49,7 +49,7 @@ def generate():
         Use the natural release method.
         When the pressure releases, add the red bell pepper chunks and the lime juice.
     ''')
-    r.instructions('Serve with plain yogurt.')
+    r.addInstruction('Serve with plain yogurt.')
 
     r.yieldPerBatch(4, 'servings')
 

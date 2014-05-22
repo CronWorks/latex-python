@@ -35,11 +35,11 @@ def generate():
     # r,quadroupleRecipe()
 
     # In general, make one call to instructions() per paragraph.
-    r.instructions('Heat the oil in a medium or large skillet, add the onions and carrots, and cook over medium heat until soft and translucent, about 4 minutes.')
+    r.addInstruction('Heat the oil in a medium or large skillet, add the onions and carrots, and cook over medium heat until soft and translucent, about 4 minutes.')
 
-    r.instructions('Add the garlic, beans, tomato, and enough water just to cover. Simmer until the beans are tender, then add the herbs and simmer 1 or 2 minutes more. Timing will depend on the age and size of the bean. Season with salt and peper to taste.')
+    r.addInstruction('Add the garlic, beans, tomato, and enough water just to cover. Simmer until the beans are tender, then add the herbs and simmer 1 or 2 minutes more. Timing will depend on the age and size of the bean. Season with salt and peper to taste.')
     
-    r.instructions('Serve hot, tepid, or even chilled.')
+    r.addInstruction('Serve hot, tepid, or even chilled.')
 
     # r.yieldPerBatch(10, 'crepes')
     r.yieldPerBatch(4, 'large servings')

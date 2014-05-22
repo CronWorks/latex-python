@@ -29,12 +29,12 @@ def generate():
     # r,quadroupleRecipe()
 
     # In general, make one call to instructions() per paragraph.
-    r.instructions('Heat oven to 350 degrees F.')
-    r.instructions('Cut rhubarb into chunks, place it in a 9"x9" oven-safe dish, and cover with 1/3 of the sugar.')
-    r.instructions('In a separate bowl, cut in butter into the flour until the mixture resembles bread crumbs, and then add remaining portion of sugar.')
-    r.instructions('Sprinkle the flour/butter/sugar mixture on top of the rhubarb.')
-    r.instructions('Place in oven and bake for 40-45 minutes. Then remove from oven and let cool.')
-    r.instructions('Top with the raw or brown sugar just before serving. ')
+    r.addInstruction('Heat oven to 350 degrees F.')
+    r.addInstruction('Cut rhubarb into chunks, place it in a 9"x9" oven-safe dish, and cover with 1/3 of the sugar.')
+    r.addInstruction('In a separate bowl, cut in butter into the flour until the mixture resembles bread crumbs, and then add remaining portion of sugar.')
+    r.addInstruction('Sprinkle the flour/butter/sugar mixture on top of the rhubarb.')
+    r.addInstruction('Place in oven and bake for 40-45 minutes. Then remove from oven and let cool.')
+    r.addInstruction('Top with the raw or brown sugar just before serving. ')
 
     # r.yieldPerBatch(10, 'crepes')
     r.yieldPerBatch(Cup(4.5))

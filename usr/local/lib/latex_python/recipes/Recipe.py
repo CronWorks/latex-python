@@ -12,6 +12,12 @@ import re
 # None is to ignore the [0] index
 BATCH_NAMES = [None, 'Single', 'Double', 'Triple', 'Quadrouple']
 
+class Ingredient:
+    def __init__(self, name, quantity, notes=''):
+        self.name = name
+        self.quantity = quantity
+        self.notes = notes
+
 class Recipe(JinjaTexDocument):
 
     def __init__(self, title, templateModule=None, searchPath=None):
@@ -28,7 +34,7 @@ class Recipe(JinjaTexDocument):
         self.ingredients = []
 
         # free-form LaTeX (will not be escaped)
-        self.instructionsList = []
+        self.instructions = []
 
         # use Quantity or string to set this (string won't be auto-scaled)
         self.makes = {'amount': None,
@@ -42,15 +48,15 @@ class Recipe(JinjaTexDocument):
     def description(self, description):
         self.descriptionText = description
 
-    def instructions(self, instructions):
-        self.instructionsList.append(instructions)
+    def addInstruction(self, instructions):
+        self.instructions.append(instructions)
 
     def getDescriptionText(self):
         return self.doStandardTexReplacements(self.descriptionText)
 
     def getInstructionsText(self):
         result = []
-        for i in self.instructionsList:
+        for i in self.instructions:
             result.append(self.doStandardTexReplacements(i))
         return ' \n\n'.join(result)
 
@@ -100,14 +106,9 @@ class Recipe(JinjaTexDocument):
         if isinstance(quantity, (int, float, str)):
             # it's a plain scalar, like '1' or '1/2' or 0.5.
             quantity = Quantity(quantity)
-        ingredient = {
-            'name': name,
-            'quantity': quantity,
-            'notes': notes
-        }
-        self.ingredients.append(ingredient)
+        self.ingredients.append(Ingredient(name, quantity, notes))
 
-    def ingredientGroup(self):
+    def ingredientGroupDivider(self):
         self.ingredients.append(None)
 
     def getIngredientsTable(self):
@@ -130,16 +131,16 @@ class Recipe(JinjaTexDocument):
                 # it's just a space between groupings
                 rows.append('')
             else:
-                columns = [ingredient['name']]
+                columns = [ingredient.name]
                 for batch in sorted(self.batches):
-                    if ingredient['quantity'] is None:
+                    if ingredient.quantity is None:
                         columns.append('')
                     else:
                         # ingredient.quantity will be either int, float, or Quantity
-                        q = ingredient['quantity'] * batch
+                        q = ingredientquantity * batch
                         columns.append(self.quantityString(q))
 
-                notes = self.doStandardTexReplacements(ingredient['notes'])
+                notes = self.doStandardTexReplacements(ingredient.notes)
                 columns.append('\\parbox[t]{0.4\\textwidth}{%s}' % notes)
                 rows.append(' & '.join(columns))
 

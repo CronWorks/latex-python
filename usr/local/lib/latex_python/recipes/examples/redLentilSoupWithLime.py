@@ -13,12 +13,12 @@ def generate():
     r.ingredient('butter', Tablespoon(4))
     r.ingredient('salt', notes='to taste')
 
-    r.ingredientGroup()
+    r.ingredientGroupDivider()
     r.ingredient('large onion', 1, 'finely diced (about 2 cups each)')
     r.ingredient('ground cumin', Teaspoon(2))
     r.ingredient('mustard seeds', Teaspoon(1.5), 'or 1 teaspoon ground mustard')
 
-    r.ingredientGroup()
+    r.ingredientGroupDivider()
     r.ingredient('chopped cilantro', Bunch(1), 'about 1 cup per bunch')
     r.ingredient('juice of limes', 3, 'or to taste')
     r.ingredient('spinach', Bunch(1, 'large'), 'chopped into small pieces')
@@ -37,13 +37,13 @@ def generate():
     From Deborah Madison's \\emph{Vegetarian Cooking for Everyone}.
     ''')
 
-    r.instructions('''
+    r.addInstruction('''
     Put the lentils in a soup pot with 2 1/2 quarts water, the turmeric,
     1 tablespoon of the butter, and 1 tablespoon salt. Bring to a boil, then lower the heat and simmer, covered,
     until the lentils are soft and falling apart, about 20 minutes. Puree for a smooth and nicer-looking soup.
     ''')
 
-    r.instructions('''
+    r.addInstruction('''
     While the soup is cooking, prepare the onion flavoring: In a medium skillet over low heat,
     cook the onion in 2 tablespoons of the remaining butter with the cumin and mustard, stirring occasionally.
     When soft, about the time the lentils are cooked or after 15 minutes, add the cilantro and cook for a minute more.
@@ -51,7 +51,7 @@ def generate():
     Taste, then add more if needed to bring up the flavors. The soup should be a tad sour.
     ''')
 
-    r.instructions('''
+    r.addInstruction('''
     Just before serving, add the last tablespoon of butter to a wide skillet. When foamy, add the spinach,
     sprinkle with salt, and cook just long enough to wilt. If the rice is warm, place a spoonful in each bowl.
     If it's leftover rice, add it to the soup and let it heat through for a minute. Serve the soup, divide
