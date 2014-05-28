@@ -137,7 +137,7 @@ class Recipe(JinjaTexDocument):
                         columns.append('')
                     else:
                         # ingredient.quantity will be either int, float, or Quantity
-                        q = ingredientquantity * batch
+                        q = ingredient.quantity * batch
                         columns.append(self.quantityString(q))
 
                 notes = self.doStandardTexReplacements(ingredient.notes)

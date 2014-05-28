@@ -10,7 +10,7 @@ class Quantity:
     singular = ''
     plural = ''
 
-    def __init__(self, quantity, qualifier=''):
+    def __init__(self, quantity, qualifier='', smartScaling=True):
         # how many cups, etc?
         # set this using decimal, float, or string.
         # you can also use tuple(n,m), where n and m are decimal, float, or string.
@@ -23,6 +23,10 @@ class Quantity:
         # self.qualifier is like 'large' or 'overflowing' to specify
         # '1 large bunch', '2 large bunches', '1 overflowing cup', etc
         self.qualifier = qualifier
+        
+        # if True, then (q * x), (q + x), and __init__ will auto-group the units
+        # i.e. Cup > Quart, etc
+        self.smartScaling = smartScaling
 
     def parseQuantityParameter(self, quantity):
         # Strings can be '1/2', '1', '0.5', '.5', '1 5/8', etc.
@@ -39,10 +43,9 @@ class Quantity:
         if isinstance(self.quantity, tuple):
             newQuantity = (self.quantity[0] + other,
                            self.quantity[1] + other)
-            result = self.__class__(newQuantity)
         else:
             newQuantity = self.quantity + other
-            result = self.__class__(newQuantity, self.qualifier)
+        result = self.__class__(newQuantity, qualifier=self.qualifier, smartScaling=self.smartScaling)
         return result
 
     # 'other' must be scalar (not tuple)
@@ -50,10 +53,9 @@ class Quantity:
         if isinstance(self.quantity, tuple):
             newQuantity = (self.quantity[0] * other,
                            self.quantity[1] * other)
-            result = self.__class__(newQuantity)
         else:
             newQuantity = self.quantity * other
-            result = self.__class__(newQuantity, self.qualifier)
+        result = self.__class__(newQuantity, qualifier=self.qualifier, smartScaling=self.smartScaling)
         return result
 
     def resolveQuantity(self):
@@ -62,6 +64,9 @@ class Quantity:
         - no quantity contains a fraction, except the native one (i.e. the zero-level of recursion)
         - all members of the list are in descending categorical scale - [Quart, Cup, Tablespoon, ...]
         '''
+        if not self.smartScaling:
+            # don't auto-group anything
+            return [self]
         if isinstance(self.quantity, tuple):
             if self.quantity[0] >= self.nextSizeMultiple and self.nextSizeClass is not None:
                 nextQuantity = (int(self.quantity[0] / self.nextSizeMultiple),
