@@ -26,8 +26,6 @@ def generate():
     r.ingredient('yogurt', Tablespoon((4, 6)))
 
     r.doubleRecipe()
-    r.tripleRecipe()
-
 
     r.description('''
     Easy, fast, and so very good! Althought the flavor is big, the soup is thin.

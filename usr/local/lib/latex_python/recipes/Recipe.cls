@@ -6,7 +6,7 @@
 \usepackage{fontspec} %supports \setmainfont, \newfontfamily, OpenType
 \setmainfont[Mapping=tex-text]{Charis SIL} % tex-text allows em dash
 \setsansfont[Scale=MatchLowercase,Mapping=tex-text]{Open Sans}
-\newfontfamily\tabularfont[Scale=0.8,Mapping=tex-text]{Open Sans}
+\newfontfamily\tabularfont[Scale=0.8,Mapping=tex-text]{Open Sans Semibold}
 \let\oldtabular\tabular
 \let\endoldtabular\endtabular
 \renewenvironment{tabular}{\tabularfont\oldtabular}{\endoldtabular}

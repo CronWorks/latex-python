@@ -37,5 +37,5 @@ recipe.doubleRecipe()
 recipe.yieldPerBatch(24, 'muffins')
 
 if __name__ == '__main__':
-    generate()
+    recipe.generate()
 
