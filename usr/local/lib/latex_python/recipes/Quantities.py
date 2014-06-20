@@ -129,6 +129,12 @@ class Quantity:
             result.append(' '.join(description))
         return '-'.join(result)  # e.g. 1-2 cups
 
+class Can(Quantity):
+    nextSizeClass = None
+    abbreviation = 'can'
+    singular = 'can'
+    plural = 'cans'
+
 class Quart(Quantity):
     nextSizeClass = None
     abbreviation = 'qt'
