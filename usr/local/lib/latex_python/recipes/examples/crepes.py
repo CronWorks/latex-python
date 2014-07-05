@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 from latex_python.recipes.Recipe import Recipe
-from latex_python.recipes.Quantities import Cup
+from latex_python.recipes.Quantities import Cup, Tablespoon, Teaspoon
 
 recipe = Recipe('Crepes')
 
@@ -11,6 +11,9 @@ recipe.tripleRecipe()
 recipe.ingredient('Flour', Cup(1), 'in order of preference: whole wheat pastry, white whole wheat, bread')
 recipe.ingredient('Eggs', 3)
 recipe.ingredient('Milk', Cup(1.25), 'mix in some buttermilk or kefir for flavor')
+recipe.ingredient('Canola oil', Tablespoon(1))
+recipe.ingredient('Salt', Teaspoon(0.5))
+recipe.ingredient('Sugar', Teaspoon(1))
 
 recipe.description('French style crepes, which are very good with either sweet or savory ingredients.')
 
