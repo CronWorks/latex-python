@@ -101,6 +101,8 @@ def generatePdf(texFilename, system, glossary=False):
 
         if not errors:
             pdfFilename = baseFilename + '.pdf'
+            # remove log file on success, because I only use it for debugging
+            system.remove(logFilename)
 
         print 'Done.'
 
