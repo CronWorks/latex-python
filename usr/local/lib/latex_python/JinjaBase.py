@@ -188,7 +188,7 @@ class JinjaTexDocument(JsonSerializable):
 
         errors = self.validate()
         if errors:
-            return (errors, [])  # errors, warnings
+            return (errors, [], None)  # errors, warnings, filename
 
         extension = outputFilenameBase[-4:].lower()
         if extension == '.tex' or extension == '.pdf':

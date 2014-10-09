@@ -107,3 +107,4 @@ def generatePdf(texFilename, system, glossary=False):
         print 'Done.'
 
     return (errors, warnings, pdfFilename)
+
