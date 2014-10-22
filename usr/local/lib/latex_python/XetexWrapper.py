@@ -34,7 +34,7 @@ def needsReprocessing(auxFilename, auxBackupFilename, logFile, errors):
     logFile.write("\n.aux and .aux.bk files are the same - signaling success...")
     return False
 
-def generatePdf(texFilename, system, glossary=False):
+def generatePdf(texFilename, system, glossary=False, preserveLogFile=False):
     errors = []
     warnings = []
     pdfFilename = None
@@ -102,7 +102,8 @@ def generatePdf(texFilename, system, glossary=False):
         if not errors:
             pdfFilename = baseFilename + '.pdf'
             # remove log file on success, because I only use it for debugging
-            system.remove(logFilename)
+            if not preserveLogFile:
+                system.remove(logFilename)
 
         print 'Done.'
 
