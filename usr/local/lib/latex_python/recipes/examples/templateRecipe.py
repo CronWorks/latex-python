@@ -17,6 +17,7 @@ recipe.set(
             #       (there is no restriction on what can be identified)
             # EX:   recipe.ingredient('brown rice', Cup(1.5, 'overflowing'))
             #       recipe.ingredient('kale', Bunch(1, 'large'), 'chopped')
+            # use quantity == None for things like salt (i.e. to taste)
             ingredients=[Ingredient('', 1, ''),
                          Ingredient('', 1, ''),
                          ],  # etc
