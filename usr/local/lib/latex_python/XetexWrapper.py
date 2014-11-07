@@ -99,6 +99,10 @@ def generatePdf(texFilename, system, glossary=False, preserveLogFile=False):
             remove(auxFilename)
             remove(auxBackupFilename)
 
+        pycFilename = baseFilename + '.pyc'
+        if exists(pycFilename):
+            system.remove(pycFilename)
+
         if not errors:
             pdfFilename = baseFilename + '.pdf'
             # remove log file on success, because I only use it for debugging
