@@ -1,6 +1,6 @@
 # /usr/bin/env python
 
-from latex_python.JinjaBase import JinjaTexDocument
+from latex_python.JinjaBase import JinjaTexDocument, bold, escapeTex
 from py_base.PySystem import PySystem
 from py_base.JobOutput import JobOutput
 from Quantities import Quantity
@@ -30,9 +30,12 @@ class Recipe(JinjaTexDocument):
         # free-form LaTeX (will not be escaped)
         self.descriptionText = ''
 
-        # use addIngredient()
-        self.ingredients = []
-
+        # use ingredientSection() to create a subtitled section
+        self.currentIngredientSection = []
+        self.ingredientSectionOrder = ['']
+        # use ingredient() to add, and ingredientGroupDivider() to add white space ('paragraph' effect)
+        self.ingredients = {'': self.currentIngredientSection}
+        
         # free-form LaTeX (will not be escaped)
         self.instructions = []
 
@@ -48,7 +51,7 @@ class Recipe(JinjaTexDocument):
     def description(self, description):
         self.descriptionText = description
 
-    def addInstruction(self, instructions):
+    def paragraph(self, instructions):
         self.instructions.append(instructions)
 
     def getDescriptionText(self):
@@ -92,13 +95,13 @@ class Recipe(JinjaTexDocument):
     def useFullQuantityText(self):
         self.fullQuantityText = True
 
-    def doubleRecipe(self):
+    def double(self):
         self.batches.add(2)
 
-    def tripleRecipe(self):
+    def triple(self):
         self.batches.add(3)
 
-    def quadroupleRecipe(self):
+    def quadrouple(self):
         self.batches.add(4)
 
     # use quantity == None for things like salt (i.e. to taste)
@@ -106,10 +109,18 @@ class Recipe(JinjaTexDocument):
         if isinstance(quantity, (int, float, str)):
             # it's a plain scalar, like '1' or '1/2' or 0.5.
             quantity = Quantity(quantity)
-        self.ingredients.append(Ingredient(name, quantity, notes))
+        self.currentIngredientSection.append(Ingredient(name, quantity, notes))
 
     def ingredientGroupDivider(self):
-        self.ingredients.append(None)
+        self.currentIngredientSection.append(None)
+
+    def ingredientSection(self, sectionName):
+        if sectionName in self.ingredients.keys():
+            self.currentIngredientSection = self.ingredients[sectionName]
+        else:
+            self.ingredientSectionOrder.append(sectionName)
+            self.currentIngredientSection = []
+            self.ingredients[sectionName]=self.currentIngredientSection
 
     def getIngredientsTable(self):
         columnSpec = ['l']
@@ -126,23 +137,27 @@ class Recipe(JinjaTexDocument):
         headings.append('Preparation/Notes')
 
         rows = []
-        for ingredient in self.ingredients:
-            if ingredient is None:
-                # it's just a space between groupings
+        for ingredientSection in self.ingredientSectionOrder:
+            if ingredientSection:
                 rows.append('')
-            else:
-                columns = [ingredient.name]
-                for batch in sorted(self.batches):
-                    if ingredient.quantity is None:
-                        columns.append('')
-                    else:
-                        # ingredient.quantity will be either int, float, or Quantity
-                        q = ingredient.quantity * batch
-                        columns.append(self.quantityString(q))
-
-                notes = self.doStandardTexReplacements(ingredient.notes)
-                columns.append('\\parbox[t]{0.4\\textwidth}{%s}' % notes)
-                rows.append(' & '.join(columns))
+                rows.append(bold(escapeTex(ingredientSection)))
+            for ingredient in self.ingredients[ingredientSection]:
+                if ingredient is None:
+                    # it's just a space between groupings
+                    rows.append('')
+                else:
+                    columns = [ingredient.name]
+                    for batch in sorted(self.batches):
+                        if ingredient.quantity is None:
+                            columns.append('')
+                        else:
+                            # ingredient.quantity will be either int, float, or Quantity
+                            q = ingredient.quantity * batch
+                            columns.append(self.quantityString(q))
+    
+                    notes = self.doStandardTexReplacements(ingredient.notes)
+                    columns.append('\\parbox[t]{0.4\\textwidth}{%s}' % notes)
+                    rows.append(' & '.join(columns))
 
         headingString = ' & '.join(['\\textbf{%s}' % h for h in headings])
         result = '''

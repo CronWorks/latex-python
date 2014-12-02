@@ -49,6 +49,11 @@ LATEX_SUBS = (
     (re.compile(r'\.\.\.+'), r'\\ldots'),
 )
 
+# normally you'd use this in conjunction with escapeTex(): bold(escapeTex(stringValue))
+def bold(value):
+    newval = value.__str__()  # in case we get a Person, Property, etc.
+    return '\\textbf{%s}' % newval
+    
 def escapeTex(value):
     newval = value.__str__()  # in case we get a Person, Property, etc.
     for pattern, replacement in LATEX_SUBS:
