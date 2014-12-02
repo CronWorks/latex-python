@@ -33,7 +33,7 @@ class Recipe(JinjaTexDocument):
         # use ingredientSection() to create a subtitled section
         self.currentIngredientSection = []
         self.ingredientSectionOrder = ['']
-        # use ingredient() to add, and ingredientGroupDivider() to add white space ('paragraph' effect)
+        # use ingredient() to add, and ingredientSpace() to add white space ('paragraph' effect)
         self.ingredients = {'': self.currentIngredientSection}
         
         # free-form LaTeX (will not be escaped)
@@ -111,7 +111,7 @@ class Recipe(JinjaTexDocument):
             quantity = Quantity(quantity)
         self.currentIngredientSection.append(Ingredient(name, quantity, notes))
 
-    def ingredientGroupDivider(self):
+    def ingredientSpace(self):
         self.currentIngredientSection.append(None)
 
     def ingredientSection(self, sectionName):

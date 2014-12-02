@@ -13,17 +13,24 @@ recipe = Recipe('Title')
 recipe.description('An enticing sentence that makes you want to cook this.')
 
 # ingredient name, quantity, prep/notes
-# NOTE: Quantities can have a descriptive modifier like 'large' or 'overflowing'.
-#       (there is no restriction on what can be identified)
+#
+# Quantities:
+# use Cup((2,3)) to indicate a range
+# use quantity == None for things like salt (i.e. to taste)
+#
+# Descriptions:
+# Quantities can have a descriptive modifier like 'large' or 'overflowing'.
+# (there is no restriction on what can be identified)
 # EX:   recipe.ingredient('brown rice', Cup(1.5, 'overflowing'))
 #       recipe.ingredient('kale', Bunch(1, 'large'), 'chopped')
-# use quantity == None for things like salt (i.e. to taste)
 recipe.ingredient('apples', 3, 'galas, preferably')
 recipe.ingredient('bosc pears', 2)
-recipe.ingredientGroupDivider() # to add white space
+
+recipe.ingredientSpace() # to add white space
 recipe.ingredient('salt', None, 'to taste')
 
-recipe.ingredientSection('Topping')
+recipe.ingredientSection('Topping') # to have a titled ingredient section
+# all subsequent calls to ingredient() will be added to the "current" section ('Topping' in this case)
 recipe.ingredient('chocolate chips', None, 'a handful should do')
 
 
