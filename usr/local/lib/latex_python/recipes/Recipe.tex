@@ -14,7 +14,9 @@
     \section*{Instructions}
     ((( recipe.getInstructionsText() )))
     
-    \section*{Yield}
-    ((( recipe.getYieldDescription() )))
+    [[[ if recipe.getYieldDescription() ]]]
+        \section*{Yield}
+        ((( recipe.getYieldDescription() )))
+    [[[ endif ]]]
 
 \end{document}

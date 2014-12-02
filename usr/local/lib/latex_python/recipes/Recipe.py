@@ -180,6 +180,8 @@ class Recipe(JinjaTexDocument):
 
     def getYieldDescription(self):
         amount = self.makes['amount']
+        if amount is None:
+            return None # signal to the template not to show the yield
         description = self.makes['description']
 
         if amount:
